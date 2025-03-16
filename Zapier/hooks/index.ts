@@ -1,22 +1,41 @@
+import { PrismaClient } from "@prisma/client";
 import express from "express";
 
-
+const client = new PrismaClient();
 const app = express();
 
 
-
+app.use(express.json());
 
 
 //password logic 
-app.post("/hooks/catch/:userId/:zapId", (req, res) => {
+app.post("/hooks/catch/:userId/:zapId", async(req, res) => {
     const userId = req.params.userId;
     const zapId = req.params.zapId;
+    const body = req.body;
 
     // Check if the password is correct
 
     // store it in a database or something
 
-    //push it n  to a queue (kafka /redis)
+    await client.$transaction(async tx => {
+        const run = await client.zapRun.create({
+            data: {
+              zapId:zapId,
+              metadata:body}
+            })
+
+        await client.zapRunOutbox.create({
+
+            data: { zapRunId: run.id  },
+          });
+
+})
+
+
+
+
+
 })
 
 
