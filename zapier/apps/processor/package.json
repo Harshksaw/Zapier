@@ -1,20 +1,24 @@
 {
   "name": "processor",
   "version": "1.0.0",
-  "main": "index.js",
-
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "start": "node dist/index.js",
-"dev": "tsc -b --verbose && node dist/index.js"
-
+    "start": "node dist/index.js",
+    "dev": "tsc -b --verbose && node dist/index.js",
+    "build": "tsc -b --verbose"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-   "zapier-database": "*",
-    "typescript": "^5.8.2"
+    "dotenv": "^16.4.5",
+    "kafkajs": "^2.2.4",
+    "zapier-database": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "@types/node": "^20.10.5"
   }
 }
