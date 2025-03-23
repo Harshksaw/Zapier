@@ -1,7 +1,7 @@
 import { prisma } from 'zapier-database';
 import { Kafka } from 'kafkajs';
 import * as dotenv from 'dotenv';
-
+import { TOPIC_NAME } from 'zapier-config';
 // Load environment variables
 dotenv.config();
 
@@ -16,22 +16,20 @@ const producer = kafka.producer();
 
 async function main() {
   console.log('Processor service starting...');
-  
+
   // Connect to Kafka
   await producer.connect();
   console.log('Connected to Kafka');
-  
+
   try {
     while (true) {
       // Find pending outbox messages
       const pendingRows = await client.zapRunOutbox.findMany({
         where: {
-          processed: false
+
         },
         take: 10,
-        orderBy: {
-          createdAt: 'asc'
-        }
+
       });
 
       if (pendingRows.length === 0) {
@@ -47,17 +45,21 @@ async function main() {
         try {
           // Send to Kafka
           await producer.send({
-            topic: row.topic || 'default-topic',
+            topic: TOPIC_NAME,
             messages: [
-              {
-                key: row.key,
-                value: row.payload,
-                headers: {
-                  messageId: row.id,
-                  timestamp: Date.now().toString()
+              pendingRows.map((r
+
+              ) => ({
+
+                return{
+
+                  value: r.zapRunId,
                 }
-              }
+                
+              }))
             ]
+
+
           });
 
           // Mark as processed
@@ -72,17 +74,8 @@ async function main() {
           console.log(`Successfully processed message ${row.id}`);
         } catch (error) {
           console.error(`Error processing message ${row.id}:`, error);
-          
-          // Update retry count
-          await client.zapRunOutbox.update({
-            where: { id: row.id },
-            data: {
-              retryCount: {
-                increment: 1
-              },
-              lastError: error.message
-            }
-          });
+
+
         }
       }
 

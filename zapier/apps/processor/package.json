@@ -15,7 +15,8 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "kafkajs": "^2.2.4",
-    "zapier-database": "workspace:*"
+    "zapier-database": "workspace:*",
+    "zapier-config": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.8.2",
