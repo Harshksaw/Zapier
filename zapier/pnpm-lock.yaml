@@ -42,12 +42,12 @@ importers:
 
   apps/processor:
     dependencies:
-      database:
-        specifier: '*'
-        version: 0.0.2
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
+      zapier-database:
+        specifier: workspace:*
+        version: link:../../packages/databases
 
   packages/databases:
     dependencies:

@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import { prisma } from 'database';
+
 import express from "express";
 
-const client = new PrismaClient();
+// const client = new PrismaClient();
 const app = express();
 
 
@@ -19,19 +18,19 @@ app.post("/hooks/catch/:userId/:zapId", async(req, res) => {
 
     // store it in a database or something
 
-    await client.$transaction(async tx => {
-        const run = await client.zapRun.create({
-            data: {
-              zapId:zapId,
-              metadata:body}
-            })
+//     await client.$transaction(async tx => {
+//         const run = await client.zapRun.create({
+//             data: {
+//               zapId:zapId,
+//               metadata:body}
+//             })
 
-        await client.zapRunOutbox.create({
+//         await client.zapRunOutbox.create({
 
-            data: { zapRunId: run.id  },
-          });
+//             data: { zapRunId: run.id  },
+//           });
 
-})
+// })
 
 
 

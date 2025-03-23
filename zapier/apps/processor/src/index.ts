@@ -1,5 +1,5 @@
 
-import { prisma } from '../../../packages/databases'
+import { prisma } from 'zapier-database';
 const client = prisma;  
 
 async function main(){
