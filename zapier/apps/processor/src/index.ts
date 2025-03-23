@@ -55,7 +55,7 @@ async function main() {
 
                   value: r.zapRunId,
                 }
-                
+
               }))
             ]
 
@@ -63,8 +63,12 @@ async function main() {
           });
 
           // Mark as processed
-          await client.zapRunOutbox.update({
-            where: { id: row.id },
+          await client.zapRunOutbox.updateMany({
+            where: { 
+              id: { 
+                in: pendingRows.map(row => row.id) 
+              } 
+            },
             data: {
               processed: true,
               processedAt: new Date()
