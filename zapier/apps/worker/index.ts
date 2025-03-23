@@ -32,6 +32,15 @@ async function main() {
 
                 await new Promise(r => setTimeout(r, 1000))
 
+                const zapId = message.key.toString()
+                const nextAction = await prisma.action.get({
+
+                })
+
+                if(nextAction.type === "email") {
+                    console.log("Sending email")
+                }
+
             
             await consumer.commitOffsets([{
                 topic: TOPIC_NAME,
