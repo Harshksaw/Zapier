@@ -1,8 +1,21 @@
 import { Request, Response } from 'express';
+import { SigninSchema, SignupSchema } from '../types';
+
 
 export async function signup(req: Request, res: Response) {
     try {
-        // Logic for creating a new user
+        const body = req.body
+        const parsedData = SignupSchema.parse(body);
+        // Logic for signing up the user
+
+        if(!parsedData.success){
+            return res.status(400).json({ error: 'Invalid input' });
+        }
+
+
+
+
+
         res.status(201).json({ message: 'User created' });
     } catch (error) {
         res.status(400).json({ error: 'Signup failed' });

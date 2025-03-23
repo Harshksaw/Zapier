@@ -16,9 +16,10 @@
     "@types/express": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "nodemon": "^3.1.9",
     "kafkajs": "^2.2.4",
+    "nodemon": "^3.1.9",
+    "zapier-config": "workspace:*",
     "zapier-database": "workspace:*",
-    "zapier-config": "workspace:*"
+    "zod": "^3.24.2"
   }
 }
