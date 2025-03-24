@@ -1,6 +1,6 @@
 import express from 'express';
 import { userRouter } from './router/user';
-import { zapRouter } from './router/zapt';
+import { zapRouter } from './router/zap';
 import cors from 'cors';
 
 import { prisma } from 'zapier-database';

@@ -18,10 +18,13 @@ model User {
   name     String
   email    String
   password String
+  zaps     Zap[]
 }
 
 model Zap {
   id           String  @id @default(uuid())
+  userId      Int
+  user        User    @relation(fields: [userId], references: [id])
   triggerId    String
   trigger      Trigger?
   actions      Action[]

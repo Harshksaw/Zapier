@@ -18,3 +18,14 @@ export const UserData= z.object({
     password: z.string(),
 
 })
+
+export const ZapCreateSchema = z.object({
+    triggerId: z.string(),
+    triggerMetadata: z.any().optional(),
+    actionId: z.array(z.object({
+        availableActionId: z.string(),
+        actionMetadata: z.any().optional(),
+    })),
+
+
+})
