@@ -47,27 +47,18 @@ async function main() {
           await producer.send({
             topic: TOPIC_NAME,
             messages: [
-              pendingRows.map((r
-
-              ) => ({
-
-                return{
-
-                  value: r.zapRunId,
-                }
-
-              }))
-            ]
+              pendingRows.map((r) => {value: r.zapRunId})
+]
 
 
           });
 
           // Mark as processed
           await client.zapRunOutbox.updateMany({
-            where: { 
-              id: { 
-                in: pendingRows.map(row => row.id) 
-              } 
+            where: {
+              id: {
+                in: pendingRows.map(row => row.id)
+              }
             },
             data: {
               processed: true,
