@@ -4,6 +4,7 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { BASE_URL } from "../config";
 
 export default function Auth() {
   const router = useRouter();
@@ -78,19 +79,54 @@ export default function Auth() {
     setIsLoading(true);
 
     try {
-      // This is where you would make your API call to authenticate
-      // For demonstration, we'll simulate a delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Determine which API endpoint to use based on the current mode
+      const endpoint = isLogin
+        ? `${BASE_URL}/api/v1/user/signin`
+        : `${BASE_URL}/api/v1/user/signup`;
 
-      // Simulate successful login/signup
-      console.log("Form submitted:", formData);
+      // Prepare the request body based on form mode
+      const requestBody = isLogin
+        ? {
+            email: formData.email,
+            password: formData.password,
+          }
+        : {
+            email: formData.email,
+            password: formData.password,
+            name: formData.name,
+            company: formData.company || undefined, // Only include if not empty
+          };
+
+      // Make the API request
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        // Handle API error responses
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Authentication failed");
+      }
+
+      // Process successful response
+      const data = await response.json();
+      console.log("Authentication successful:", data);
+
+      // Store auth token if provided
+      if (data.token) {
+        localStorage.setItem("authToken", data.token);
+      }
 
       // Redirect to dashboard on success
       router.push("/dashboard");
     } catch (error) {
       console.error("Authentication error:", error);
       setErrors({
-        form: "Authentication failed. Please try again.",
+        form: error.message || "Authentication failed. Please try again.",
       });
     } finally {
       setIsLoading(false);
