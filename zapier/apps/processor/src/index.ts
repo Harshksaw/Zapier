@@ -26,10 +26,9 @@ async function main() {
       // Find pending outbox messages
       const pendingRows = await client.zapRunOutbox.findMany({
         where: {
-
+          // No 'processed' field in the schema, so we'll fetch all records
         },
         take: 10,
-
       });
 
       if (pendingRows.length === 0) {
@@ -47,30 +46,24 @@ async function main() {
           await producer.send({
             topic: TOPIC_NAME,
             messages: [
-              pendingRows.map((r) => {value: r.zapRunId})
-]
-
-
+              { 
+                key: row.zapRunId,
+                value: JSON.stringify({ zapRunId: row.zapRunId }) 
+              }
+            ]
           });
 
-          // Mark as processed
-          await client.zapRunOutbox.updateMany({
+          // After successful Kafka send, delete the outbox record
+          // Instead of updating a 'processed' flag, we'll delete the record
+          await client.zapRunOutbox.delete({
             where: {
-              id: {
-                in: pendingRows.map(row => row.id)
-              }
-            },
-            data: {
-              processed: true,
-              processedAt: new Date()
+              id: row.id
             }
           });
 
           console.log(`Successfully processed message ${row.id}`);
         } catch (error) {
           console.error(`Error processing message ${row.id}:`, error);
-
-
         }
       }
 

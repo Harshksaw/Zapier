@@ -1,25 +1,42 @@
 "use client";
 // pages/auth.js
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "../config";
 
+// Define interfaces for form data and errors
+interface FormData {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  company: string;
+}
+
+interface FormErrors {
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  name?: string;
+  form?: string;
+}
+
 export default function Auth() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
     confirmPassword: "",
     name: "",
     company: "",
   });
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -27,7 +44,7 @@ export default function Auth() {
     });
 
     // Clear error when user starts typing
-    if (errors[name]) {
+    if (errors[name as keyof FormErrors]) {
       setErrors({
         ...errors,
         [name]: "",
@@ -35,8 +52,8 @@ export default function Auth() {
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
 
     // Email validation
     if (!formData.email) {
@@ -69,7 +86,7 @@ export default function Auth() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -123,7 +140,7 @@ export default function Auth() {
 
       // Redirect to dashboard on success
       router.push("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Authentication error:", error);
       setErrors({
         form: error.message || "Authentication failed. Please try again.",

@@ -1,10 +1,10 @@
 // components/HeroSection.js
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 
 export default function HeroSection() {
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission
     console.log('Email submitted:', email);
