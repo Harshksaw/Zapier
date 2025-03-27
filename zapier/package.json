@@ -9,7 +9,8 @@
     "check-types": "turbo run check-types",
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",
-    "db:migrate": "turbo run db:migrate"
+    "db:migrate": "turbo run db:migrate",
+    "start": "turbo run start"
   },
   "workspaces": [
     "packages/*",
