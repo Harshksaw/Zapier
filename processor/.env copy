@@ -1,0 +1,25 @@
+# Database
+DATABASE_URL="postgresql://myuser:mypassword@localhost:5432/zapier"
+
+# Kafka
+KAFKA_BROKER_URL="localhost:29092"
+KAFKA_CLIENT_ID="zapier-app"
+KAFKA_GROUP_ID="zapier-consumer-group"
+
+# Zookeeper
+ZOOKEEPER_URL="localhost:2181"
+
+# Kafka UI
+KAFKA_UI_URL="http://localhost:8080"
+
+# Application ports
+BACKEND1_PORT=3001
+BACKEND2_PORT=3002
+API_GATEWAY_PORT=3000
+
+# JWT (if you're using authentication)
+JWT_SECRET="your-secret-key-here"
+JWT_EXPIRES_IN="1d"
+
+# Other services
+REDIS_URL="redis://localhost:6379"
