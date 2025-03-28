@@ -57,7 +57,40 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: "your-db-connection-string"
+      DATABASE_URL: "postgresql://myuser:mypassword@my_postgres:5432/zapier"
+      KAFKA_BROKER: "kafka:9092"
+
+  hooks:
+    build: ./hooks
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: "postgresql://myuser:mypassword@my_postgres:5432/zapier"
+      KAFKA_BROKER: "kafka:9092"
+
+  processor:
+    build: ./processor
+    ports:
+      - "3002:3002"
+    environment:
+      DATABASE_URL: "postgresql://myuser:mypassword@my_postgres:5432/zapier"
+      KAFKA_BROKER: "kafka:9092"
+
+  worker:
+    build: ./worker
+    ports:
+      - "3003:3003"
+    environment:
+      DATABASE_URL: "postgresql://myuser:mypassword@my_postgres:5432/zapier"
+      KAFKA_BROKER: "kafka:9092"
+
+  client:
+    build: ./client
+    ports:
+      - "3004:3004"
+    environment:
+      API_BASE_URL: "http://primary-backend:3000"
+      KAFKA_BROKER: "kafka:9092"
 
 volumes:
   db_data:
